@@ -5,6 +5,10 @@ import PortableText from "react-portable-text";
 import { Post } from "../../typings";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useState } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "../../utils/firebase";
+import { useRouter } from "next/router";
+
 interface IFormInput {
   _id: string;
   name: string;
@@ -16,6 +20,8 @@ interface Props {
 }
 
 const Post = ({ post }: Props) => {
+  const [user, loading] = useAuthState(auth);
+  const route = useRouter();
   const [submitted, setSubmitted] = useState(false);
   const {
     register,
@@ -23,6 +29,10 @@ const Post = ({ post }: Props) => {
     formState: { errors },
   } = useForm<IFormInput>();
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
+    if (!user) {
+      route.push("/auth/login");
+      return;
+    }
     await fetch("/api/createComment", {
       method: "POST",
       body: JSON.stringify(data),
@@ -149,7 +159,7 @@ const Post = ({ post }: Props) => {
             </label>
 
             <label className="mb-5">
-              <span className="text-grey-800">Name</span>
+              <span className="text-grey-800">Comment</span>
               <textarea
                 {...register("comment", { required: true })}
                 className="shadow border rounded py-2 px-3 form-textarea mt-1 block w-full ring-orange-600 outline-none focus:ring"
