@@ -5,7 +5,7 @@ import Header from "../components/Header";
 import Banner from "../components/Banner";
 
 // sanity
-import { sanityClient, urlFor } from "../sanity";
+import { sanityClient, urlFor } from "../utils/sanity";
 
 // all the type defination are there in typings.d.ts
 import { Post } from "../typings";
