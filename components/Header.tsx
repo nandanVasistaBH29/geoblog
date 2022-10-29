@@ -27,7 +27,7 @@ const Header = () => {
               <h3>Sign in</h3>
             </Link>
             <h3 className="border px-4 py-1 rounded-full border-orange-600">
-              Get Started With Us
+              Get Started
             </h3>
           </>
         ) : (

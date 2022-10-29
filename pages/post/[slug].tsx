@@ -141,6 +141,7 @@ const Post = ({ post }: Props) => {
                 {...register("name", { required: true })}
                 className="shadow border rounded py-2 px-3 form-input mt-1 block w-full ring-orange-600 outline-none focus:ring"
                 placeholder="nandan"
+                value={user?.displayName!}
                 type="text"
                 name="name"
                 id=""
@@ -153,6 +154,7 @@ const Post = ({ post }: Props) => {
                 placeholder="email@email.com"
                 type="email"
                 name="email"
+                value={user?.email!}
                 className="shadow border rounded py-2 px-3 form-input mt-1 block w-full ring-orange-600 outline-none focus:ring "
                 id=""
               />
