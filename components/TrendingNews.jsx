@@ -41,7 +41,10 @@ const TrendingNews = ({ countryCode }) => {
                           <p className="text-xl font-pold">{article.title}</p>
                           <br />
                           <p className="text-sm">
-                            {article.description} by {article.author}
+                            {article.description} by{" "}
+                            <span className="px-2 text-orange-500">
+                              {article.author}
+                            </span>
                           </p>
                         </div>
                       </div>
