@@ -1,19 +1,31 @@
-import type { NextPage } from "next";
 import Head from "next/head";
-import Image from "next/image";
 import Header from "../components/Header";
 import Banner from "../components/Banner";
+import TrendingNews from "../components/TrendingNews";
 
 // sanity
 import { sanityClient, urlFor } from "../utils/sanity";
 
 // all the type defination are there in typings.d.ts
 import { Post } from "../typings";
+import { useState } from "react";
 import Link from "next/link";
+import { useEffect } from "react";
 interface Props {
   posts: [Post];
+  countryCode?: string;
 }
 function Home({ posts }: Props): JSX.Element {
+  const [country, setCountry] = useState("");
+  useEffect(() => {
+    detectCountry();
+  }, [country]);
+  const detectCountry = async () => {
+    const res = await fetch("http://ip-api.com/json");
+    const result = await res.json();
+    setCountry(result.countryCode);
+  };
+
   return (
     <div className="">
       <Head>
@@ -23,16 +35,17 @@ function Home({ posts }: Props): JSX.Element {
       <Header />
       <main>
         <Banner />
-        <div className="mt-4  p-2 rounded grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6 mt-6 p-2 lg:p-6 lg:mt-6">
+        <h2 className="mt-4 font-bold p-2 text-4xl text-orange-500 hover:underline md:text-5xl">
+          Originals
+        </h2>
+        <div className="mt-4  p-2 rounded grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6 mt-6 p-2 lg:p-6 lg:mt-6  shadow-2xl	shadow-orange-500/50">
           {posts.map((post, index) => {
-            console.log(post.slug.current);
-
             return (
               <div>
                 <Link key={post._id} href={`/post/${post.slug.current}`}>
-                  <div className="overflow-hidden group cursor-pointer border rounded-lg">
+                  <div className="overflow-hidden group cursor-pointer border rounded-lg shadow-2xl	shadow-cyan-500/50">
                     <img
-                      className="h-60 w-full object-cover group-hover:scale-105 transition-transform duration-200 ease-in-out"
+                      className="h-60 w-full object-cover group-hover:scale-105 transition-transform duration-200 ease-in-out "
                       src={urlFor(post.mainImage).url()!}
                     />
                     <div className="flex justify-between p-5 bg-white">
@@ -58,10 +71,20 @@ function Home({ posts }: Props): JSX.Element {
             );
           })}
         </div>
+        <h2 className="mt-4 font-bold p-2 text-4xl text-cyan-500 hover:underline md:text-5xl">
+          Trending News In {country}
+        </h2>
+        {country !== "" && (
+          <TrendingNews
+            key={country.toLowerCase()}
+            countryCode={country.toLowerCase() || "us"}
+          />
+        )}
       </main>
     </div>
   );
 }
+
 // ssr
 
 export const getServerSideProps = async () => {
