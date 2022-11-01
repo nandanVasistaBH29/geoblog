@@ -23,7 +23,7 @@ function Home({ posts }: Props): JSX.Element {
   const detectCountry = async () => {
     const res = await fetch("http://ip-api.com/json");
     const result = await res.json();
-    setCountry(result.countryCode);
+    setCountry(result.countryCode.toLowerCase());
   };
 
   return (
