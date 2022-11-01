@@ -7,7 +7,9 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../utils/firebase";
+import { AiFillCrown } from "react-icons/ai";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 interface IFormInput {
   _id: string;
@@ -50,7 +52,7 @@ const Post = ({ post }: Props) => {
         <Header />
         {post[0].mainImage && (
           <img
-            className="w-full max-w-3xl mx-auto h-52 rounded-lg "
+            className="object-fill	w-full max-w-xl mx-auto h-40 rounded-lg "
             src={urlFor(post[0].mainImage && post[0].mainImage).url()}
           />
         )}
@@ -69,52 +71,62 @@ const Post = ({ post }: Props) => {
               />
             )}
             <p className="font-extralight text-sm">
-              Blog Post By{" "}
+              Blog Post By
               <span className="text-orange-600">{post[0].author.name}</span> -
               Published @ {new Date(post[0]._createdAt).toLocaleString()}
             </p>
           </div>
           <div className="px-[2vw] max-w-5xl">
-            <PortableText
-              className=""
-              dataset={process.env.NEXT_PUBLIC_SANITY_DATASET!}
-              projectId={process.env.NEXT_PUBLIC_SANITY_PROJECT_ID!}
-              content={post[0].body}
-              serializers={{
-                h1: (props: any) => {
-                  <h1
-                    className="font-serif text-2xl font-bold my-5"
-                    {...props}
-                  />;
-                },
-                h2: (props: any) => {
-                  <h1
-                    className="font-serif text-xl font-bold my-5"
-                    {...props}
-                  />;
-                },
-                p: (props: any) => {
-                  <p
-                    className="font-serif text-sm font-normal my-5"
-                    {...props}
-                  />;
-                },
-                li: ({ children }: any) => {
-                  <li className="font-serif ml-4 list-disc">{children}</li>;
-                },
-                link: ({ href, children }: any) => {
-                  <a href={href} className="font-serif text-blue-500">
-                    {children}
-                  </a>;
-                },
-                img: ({ href }: any) => {
-                  <img
-                    ref={href}
-                    className="font-serif p-3 max-h-60 max-w-40 mx-auto"
-                  />;
-                },
-              }}
-            />
+            {!post[0].premium ? (
+              <PortableText
+                className=""
+                dataset={process.env.NEXT_PUBLIC_SANITY_DATASET!}
+                projectId={process.env.NEXT_PUBLIC_SANITY_PROJECT_ID!}
+                content={post[0].body}
+                serializers={{
+                  h1: (props: any) => {
+                    <h1
+                      className="font-serif text-2xl font-bold my-5"
+                      {...props}
+                    />;
+                  },
+                  h2: (props: any) => {
+                    <h1
+                      className="font-serif text-xl font-bold my-5"
+                      {...props}
+                    />;
+                  },
+                  p: (props: any) => {
+                    <p
+                      className="font-serif text-sm font-normal my-5"
+                      {...props}
+                    />;
+                  },
+                  li: ({ children }: any) => {
+                    <li className="font-serif ml-4 list-disc">{children}</li>;
+                  },
+                  link: ({ href, children }: any) => {
+                    <a href={href} className="font-serif text-blue-500">
+                      {children}
+                    </a>;
+                  },
+                  img: ({ href }: any) => {
+                    <img
+                      ref={href}
+                      className="font-serif p-3 max-h-60 max-w-40 mx-auto"
+                    />;
+                  },
+                }}
+              />
+            ) : (
+              <Link href={"/checkout"}>
+                <>
+                  <AiFillCrown className="text-orange-600" />
+                  <h3 className="text-green-400">Pro Account To Read More</h3>
+                  <h4>Click Here</h4>
+                </>
+              </Link>
+            )}
           </div>
         </article>
         {/* comments */}
@@ -252,6 +264,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
           approved==true],
         description,
         mainImage,
+        premium,
         slug,
         body
     }`;

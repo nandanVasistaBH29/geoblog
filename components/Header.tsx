@@ -2,7 +2,7 @@ import Link from "next/link";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../utils/firebase";
 import { MdNotificationsActive } from "react-icons/md";
-import { AiFillCloseCircle } from "react-icons/ai";
+import { AiFillCloseCircle, AiFillCrown } from "react-icons/ai";
 import { useState } from "react";
 const Header = () => {
   const [user, loading] = useAuthState(auth);
@@ -60,9 +60,13 @@ const Header = () => {
               <Link href={"/auth/login"}>
                 <h3>Sign in</h3>
               </Link>
-              <h3 className="border px-4 py-1 rounded-full border-orange-600">
-                Get Started
-              </h3>
+              <Link
+                href={"/checkout"}
+                className="flex items-center border px-4 py-1 rounded-full border-orange-600"
+              >
+                <AiFillCrown className="text-xl md:text-3xl " />
+                <h3 className="text-xl md:text-2xl text-green-500">Get Pro</h3>
+              </Link>
             </>
           ) : (
             <>

@@ -2,7 +2,7 @@ import Head from "next/head";
 import Header from "../components/Header";
 import Banner from "../components/Banner";
 import TrendingNews from "../components/TrendingNews";
-
+import { AiFillCrown } from "react-icons/ai";
 // sanity
 import { sanityClient, urlFor } from "../utils/sanity";
 
@@ -58,6 +58,14 @@ function Home({ posts }: Props): JSX.Element {
                     <div className="flex justify-between p-5 bg-white">
                       <div>
                         <p className="text-xl font-pold">{post.title}</p>
+                        <span className="font-bold text-xl md:text-2xl">
+                          {post.premium && (
+                            <div className="flex items-center justify-start">
+                              <AiFillCrown className="text-orange-600" />
+                              <h3 className="text-green-400">Pro</h3>
+                            </div>
+                          )}
+                        </span>
                         <br />
                         <p className="text-sm">
                           {post.description} by {post.author.name}
@@ -104,6 +112,7 @@ export const getServerSideProps = async () => {
   },
   description,
   mainImage,
+  premium,
   slug
 }`;
   const posts = await sanityClient.fetch(query);
