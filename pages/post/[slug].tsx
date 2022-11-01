@@ -74,7 +74,7 @@ const Post = ({ post }: Props) => {
               Published @ {new Date(post[0]._createdAt).toLocaleString()}
             </p>
           </div>
-          <div>
+          <div className="px-[2vw] max-w-5xl">
             <PortableText
               className=""
               dataset={process.env.NEXT_PUBLIC_SANITY_DATASET!}
