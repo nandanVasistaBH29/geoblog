@@ -2,9 +2,9 @@ import { createClient, createCurrentUserHook } from "next-sanity";
 import createImageUrlBuilder from "@sanity/image-url";
 // sanity studio
 export const config = {
-  dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || "production",
-  projectId: "zl2lq0w6", // changes danger
-  token: process.env.SANITY_API_TOKEN,
+  dataset: process.env.NEXT_PUBLIC_SANITY_STUDIO_DATASET || "production",
+  projectId: process.env.NEXT_PUBLIC_SANITY_STUDIO_PROJECT_ID,
+  token: process.env.SANITY_STUDIO_API_TOKEN,
   apiVersion: "v1",
   useCdn: process.env.NODE_DEV === "production",
 };
