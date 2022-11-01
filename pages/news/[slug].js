@@ -6,9 +6,13 @@ import Header from "../../components/Header";
 const OneNews = () => {
   const [country, setCountry] = useState("");
   const detectCountry = async () => {
-    const res = await fetch("http://ip-api.com/json");
+    const res = await fetch(
+      `https://ipinfo.io?token=${process.env.NEXT_PUBLIC_IP_API_TOKEN}`
+    );
     const result = await res.json();
-    setCountry(result.countryCode.toLowerCase());
+    // console.dir(result);
+
+    setCountry(result.country);
   };
   const router = useRouter();
   const { slug } = router.query;
@@ -30,7 +34,7 @@ const OneNews = () => {
     let allArticles = [],
       correctIdx = -1;
     fetch(
-      `https://saurav.tech/NewsAPI/top-headlines/category/general/${countryCode}.json`,
+      `https://saurav.tech/NewsAPI/top-headlines/category/general/${countryCode.toLowerCase()}.json`,
       requestOptions
     )
       .then((response) => response.json())

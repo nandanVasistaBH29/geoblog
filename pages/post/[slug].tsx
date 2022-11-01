@@ -29,14 +29,14 @@ const Post = ({ post }: Props) => {
     formState: { errors },
   } = useForm<IFormInput>();
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
-    console.log(data);
+    // console.log(data);
 
     await fetch("/api/createComment", {
       method: "POST",
       body: JSON.stringify(data),
     })
       .then(() => {
-        console.log(data);
+        // console.log(data);
         setSubmitted(true);
       })
       .catch((err) => {
@@ -121,7 +121,7 @@ const Post = ({ post }: Props) => {
         <hr className="max-w-lg my-5 mx-auto border border-yellow-500"></hr>
 
         {submitted ? (
-          <div className="flex flex-col py-10 my-10 bg-orange-500 text-white max-w-2xl mx-auto">
+          <div className="flex flex-col text-center py-10 my-10 bg-orange-500 text-white max-w-2xl mx-auto">
             <h3 className="font-bold text-3xl">Thank You For Submitting</h3>
             <p>Wait For The Approval Of The Comment</p>
           </div>

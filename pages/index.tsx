@@ -17,13 +17,18 @@ interface Props {
 }
 function Home({ posts }: Props): JSX.Element {
   const [country, setCountry] = useState("");
+  const [city, setCity] = useState("");
   useEffect(() => {
     detectCountry();
   }, [country]);
   const detectCountry = async () => {
-    const res = await fetch("http://ip-api.com/json");
+    const res = await fetch(
+      `https://ipinfo.io?token=${process.env.NEXT_PUBLIC_IP_API_TOKEN}`
+    );
     const result = await res.json();
-    setCountry(result.countryCode.toLowerCase());
+    // console.dir(result);
+    setCountry(result.country);
+    setCity(result.city);
   };
 
   return (
@@ -31,10 +36,6 @@ function Home({ posts }: Props): JSX.Element {
       <Head>
         <title>Geo Blog</title>
         <link rel="icon" href="/favicon.ico" />
-        <meta
-          http-equiv="Content-Security-Policy"
-          content="upgrade-insecure-requests"
-        />
       </Head>
       <Header />
       <main>
@@ -78,9 +79,9 @@ function Home({ posts }: Props): JSX.Element {
           })}
         </div>
         <h2 className="mt-4 font-bold p-2 text-4xl text-cyan-500 hover:underline md:text-5xl">
-          Trending News In {country}
+          Trending News In {city},{country}
         </h2>
-        {country !== "" && (
+        {country !== "" && country !== undefined && (
           <TrendingNews
             key={country.toLowerCase()}
             countryCode={country.toLowerCase() || "us"}
