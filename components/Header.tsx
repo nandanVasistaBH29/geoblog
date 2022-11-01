@@ -8,6 +8,7 @@ const Header = () => {
   const [user, loading] = useAuthState(auth);
   const [perm, setPerm] = useState(false);
   const [showMsg, setShowMsg] = useState(false);
+
   const handleClick = () => {
     Notification.requestPermission().then((perm) => {
       if (perm === "granted") {

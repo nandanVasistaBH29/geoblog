@@ -3,11 +3,16 @@ import Header from "../components/Header";
 import { auth } from "../utils/firebase";
 
 import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 const Dashboard = () => {
   const [user, loading] = useAuthState(auth);
   const router = useRouter();
-
+  useEffect(() => {
+    if (!user) {
+      router.push("/");
+    }
+  }, [user]);
   if (loading) {
     <h1>Loading...</h1>;
   }
