@@ -27,7 +27,7 @@ const generateRecaptcha = () => {
 const loginWithPhoneNumber = (phone) => {
   generateRecaptcha();
   let appVerifier = window.recaptchaVerifier;
-  signInWithPhoneNumber(auth, "+919353457914", appVerifier)
+  signInWithPhoneNumber(auth, phone, appVerifier)
     .then((res) => {
       console.log(res);
       window.confirmationResult = res;
