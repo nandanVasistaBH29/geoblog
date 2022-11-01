@@ -4,11 +4,16 @@ import { useState, useEffect } from "react";
 import Header from "../../components/Header";
 
 const OneNews = () => {
+  const [country, setCountry] = useState("");
+  const detectCountry = async () => {
+    const res = await fetch("http://ip-api.com/json");
+    const result = await res.json();
+    setCountry(result.countryCode.toLowerCase());
+  };
   const router = useRouter();
   const { slug } = router.query;
-  const myDataFromTheUrl = slug.split("@");
-  const title = myDataFromTheUrl[0];
-  const countryCode = myDataFromTheUrl[1];
+  const title = slug;
+  const countryCode = country;
   const [article, setArticle] = useState({});
   const [content, setContent] = useState([]);
 
@@ -17,6 +22,7 @@ const OneNews = () => {
     redirect: "follow",
   };
   useEffect(() => {
+    detectCountry();
     if (countryCode === undefined) {
       <h1>Sorry Something went wrong</h1>;
       router.push("/");
@@ -62,7 +68,7 @@ const OneNews = () => {
         }
       })
       .catch((error) => console.log("error", error));
-  }, []);
+  }, [country]);
 
   return (
     <div>
