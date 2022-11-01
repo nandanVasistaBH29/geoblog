@@ -31,6 +31,10 @@ function Home({ posts }: Props): JSX.Element {
       <Head>
         <title>Geo Blog</title>
         <link rel="icon" href="/favicon.ico" />
+        <meta
+          http-equiv="Content-Security-Policy"
+          content="upgrade-insecure-requests"
+        />
       </Head>
       <Header />
       <main>
