@@ -29,10 +29,8 @@ const Post = ({ post }: Props) => {
     formState: { errors },
   } = useForm<IFormInput>();
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
-    if (!user) {
-      route.push("/auth/login");
-      return;
-    }
+    console.log(data);
+
     await fetch("/api/createComment", {
       method: "POST",
       body: JSON.stringify(data),
@@ -51,9 +49,12 @@ const Post = ({ post }: Props) => {
       <main>
         <Header />
         {post[0].mainImage && (
-          <img className="w-full h-40" src={urlFor(post[0].mainImage).url()} />
+          <img
+            className="w-full max-w-3xl mx-auto h-52 rounded-lg "
+            src={urlFor(post[0].mainImage && post[0].mainImage).url()}
+          />
         )}
-        <article className="text-w-3xl mx-auto p-5">
+        <article className="text-w-3xl max-w-5xl mx-auto p-5">
           <h1 className="text-3xl mt-10 mb-3">{post[0].title}</h1>
           <h2 className="text-xl font-light text-gray-300 mb-2">
             {post[0].description}
@@ -120,7 +121,7 @@ const Post = ({ post }: Props) => {
         <hr className="max-w-lg my-5 mx-auto border border-yellow-500"></hr>
 
         {submitted ? (
-          <div className="flex flex-col py-10 my-10 bg-orange-500 text-white max-w-2xl">
+          <div className="flex flex-col py-10 my-10 bg-orange-500 text-white max-w-2xl mx-auto">
             <h3 className="font-bold text-3xl">Thank You For Submitting</h3>
             <p>Wait For The Approval Of The Comment</p>
           </div>
@@ -267,6 +268,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     props: {
       post,
     },
-    revalidate: 14400, //some time// after 12hrs SSG happens agains -> ISR
+    revalidate: 1000, //some time// after 12hrs SSG happens agains -> ISR
   };
 };

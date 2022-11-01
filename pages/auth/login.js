@@ -22,7 +22,7 @@ export default function Login() {
     try {
       const result = await signInWithPopup(auth, googleProvider);
 
-      route.push("/");
+      // route.push("/");
     } catch (err) {
       console.log(err);
     }

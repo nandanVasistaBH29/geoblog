@@ -44,10 +44,12 @@ function Home({ posts }: Props): JSX.Element {
               <div>
                 <Link key={post._id} href={`/post/${post.slug.current}`}>
                   <div className="overflow-hidden group cursor-pointer border rounded-lg shadow-2xl	shadow-cyan-500/50">
-                    <img
-                      className="h-60 w-full object-cover group-hover:scale-105 transition-transform duration-200 ease-in-out "
-                      src={urlFor(post.mainImage).url()!}
-                    />
+                    {post.mainImage && (
+                      <img
+                        className="h-60 w-full object-cover group-hover:scale-105 transition-transform duration-200 ease-in-out "
+                        src={urlFor(post.mainImage).url()!}
+                      />
+                    )}
                     <div className="flex justify-between p-5 bg-white">
                       <div>
                         <p className="text-xl font-pold">{post.title}</p>

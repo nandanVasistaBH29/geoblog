@@ -3,14 +3,11 @@ import Header from "../components/Header";
 import { auth } from "../utils/firebase";
 
 import { useRouter } from "next/router";
-const Dashboard = () => {
-  const route = useRouter();
-  const [user, loading] = useAuthState(auth);
 
-  if (!user) {
-    route.push("/auth/login");
-    return;
-  }
+const Dashboard = () => {
+  const [user, loading] = useAuthState(auth);
+  const router = useRouter();
+
   if (loading) {
     <h1>Loading...</h1>;
   }
