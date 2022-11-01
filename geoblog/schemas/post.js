@@ -9,6 +9,11 @@ export default {
       type: "string",
     },
     {
+      name: "premium",
+      title: "Premium",
+      type: "boolean",
+    },
+    {
       name: "description",
       title: "Description",
       type: "string",
