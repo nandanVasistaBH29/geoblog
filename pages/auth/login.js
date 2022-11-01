@@ -29,7 +29,7 @@ const loginWithPhoneNumber = (phone) => {
   let appVerifier = window.recaptchaVerifier;
   signInWithPhoneNumber(auth, phone, appVerifier)
     .then((res) => {
-      console.log(res);
+      // console.log(res);
       window.confirmationResult = res;
     })
     .catch((err) => {
@@ -126,7 +126,7 @@ export default function Login() {
                 Phone With Country Code(+91,+1)
               </label>
               <input
-                type="number"
+                type="text"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 className="w-full bg-white rounded border border-gray-300 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
@@ -150,7 +150,7 @@ export default function Login() {
                 className="w-full bg-white rounded border border-gray-300 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
               />
             </div>
-
+            {}
             <button
               id="sign-in-button"
               onClick={() => verifyOtp(otp)}
