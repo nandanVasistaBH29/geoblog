@@ -1,6 +1,8 @@
 import { loadStripe } from "@stripe/stripe-js";
-
-export async function checkout({ lineItems }) {
+// 1-> adfree idofPurcase
+// 2-> become a writer
+// 3-> become a elite writer
+export async function checkout({ lineItems }, idOfPurchase) {
   let stripePromise = null;
   const getStripe = () => {
     if (!stripePromise) {
@@ -13,7 +15,7 @@ export async function checkout({ lineItems }) {
   await stripe.redirectToCheckout({
     mode: "payment",
     lineItems,
-    successUrl: `${window.location.origin}?session_id=(CHECKOUT_SESSION_ID)`,
+    successUrl: `${window.location.origin}/success?session_id=${idOfPurchase}`,
     cancelUrl: `${window.location.origin}`,
   });
 }

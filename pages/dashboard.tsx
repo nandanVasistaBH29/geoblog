@@ -1,21 +1,32 @@
-import { useAuthState } from "react-firebase-hooks/auth";
+import { useState, useEffect } from "react";
 import Header from "../components/Header";
 import { auth } from "../utils/firebase";
 
 import { useRouter } from "next/router";
-import { useEffect } from "react";
 
 const Dashboard = () => {
-  const [user, loading] = useAuthState(auth);
-  const router = useRouter();
+  const route = useRouter();
+  const [user, setUser] = useState({
+    email: "",
+    displayName: "friend",
+    photoURL: "",
+  });
   useEffect(() => {
-    if (!user) {
-      router.push("/");
+    const localStr = localStorage.getItem("geoblog-mail");
+    if (localStr === null) {
+      route.push("/auth/login");
+      return;
     }
-  }, [user]);
-  if (loading) {
-    <h1>Loading...</h1>;
-  }
+    The(localStr);
+  }, []);
+  const The = (str: string) => {
+    const data = JSON.parse(str);
+    setUser({
+      email: data.email,
+      displayName: data.displayName,
+      photoURL: data.photoURL,
+    });
+  };
   if (user) {
     return (
       <div>

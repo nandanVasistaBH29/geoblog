@@ -4,12 +4,11 @@ import { sanityClient, urlFor } from "../../utils/sanity";
 import PortableText from "react-portable-text";
 import { Post } from "../../typings";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { useState } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "../../utils/firebase";
+import { useEffect, useState } from "react";
 import { AiFillCrown } from "react-icons/ai";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import axios from "axios";
 
 interface IFormInput {
   _id: string;
@@ -22,23 +21,46 @@ interface Props {
 }
 
 const Post = ({ post }: Props) => {
-  const [user, loading] = useAuthState(auth);
+  const [user, setUser] = useState({
+    displayName: "",
+    email: "",
+    photoURL: "",
+  });
   const route = useRouter();
   const [submitted, setSubmitted] = useState(false);
+  const [access, setAccess] = useState(false);
+  useEffect(() => {
+    const datafromlocalstorage = JSON.parse(
+      localStorage.getItem("geoblog-mail")!
+    );
+    if (!datafromlocalstorage || !datafromlocalstorage.email) return;
+
+    setUser(datafromlocalstorage);
+    checkIfUserHasPROaccount(datafromlocalstorage.email);
+  }, []);
+  const checkIfUserHasPROaccount = async (email: string) => {
+    try {
+      const res = await axios.get(
+        `/api/auth/check-permision?q=${email}&id=isPro`
+      );
+      setAccess(true);
+      console.log(res);
+    } catch (err) {
+      console.log(err);
+      setAccess(false);
+    }
+  };
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<IFormInput>();
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
-    // console.log(data);
-
     await fetch("/api/createComment", {
       method: "POST",
       body: JSON.stringify(data),
     })
       .then(() => {
-        // console.log(data);
         setSubmitted(true);
       })
       .catch((err) => {
@@ -119,13 +141,62 @@ const Post = ({ post }: Props) => {
                 }}
               />
             ) : (
-              <Link href={"/checkout"}>
-                <>
-                  <AiFillCrown className="text-orange-600" />
-                  <h3 className="text-green-400">Pro Account To Read More</h3>
-                  <h4>Click Here</h4>
-                </>
-              </Link>
+              <>
+                {access ? (
+                  <PortableText
+                    className=""
+                    dataset={process.env.NEXT_PUBLIC_SANITY_DATASET!}
+                    projectId={process.env.NEXT_PUBLIC_SANITY_PROJECT_ID!}
+                    content={post[0].body}
+                    serializers={{
+                      h1: (props: any) => {
+                        <h1
+                          className="font-serif text-2xl font-bold my-5"
+                          {...props}
+                        />;
+                      },
+                      h2: (props: any) => {
+                        <h1
+                          className="font-serif text-xl font-bold my-5"
+                          {...props}
+                        />;
+                      },
+                      p: (props: any) => {
+                        <p
+                          className="font-serif text-sm font-normal my-5"
+                          {...props}
+                        />;
+                      },
+                      li: ({ children }: any) => {
+                        <li className="font-serif ml-4 list-disc">
+                          {children}
+                        </li>;
+                      },
+                      link: ({ href, children }: any) => {
+                        <a href={href} className="font-serif text-blue-500">
+                          {children}
+                        </a>;
+                      },
+                      img: ({ href }: any) => {
+                        <img
+                          ref={href}
+                          className="font-serif p-3 max-h-60 max-w-40 mx-auto"
+                        />;
+                      },
+                    }}
+                  />
+                ) : (
+                  <Link href={"/checkout"}>
+                    <>
+                      <AiFillCrown className="text-orange-600" />
+                      <h3 className="text-green-400">
+                        Pro Account To Read More
+                      </h3>
+                      <h4>Click Here</h4>
+                    </>
+                  </Link>
+                )}
+              </>
             )}
           </div>
         </article>
@@ -154,7 +225,7 @@ const Post = ({ post }: Props) => {
                 {...register("name", { required: true })}
                 className="shadow border rounded py-2 px-3 form-input mt-1 block w-full ring-orange-600 outline-none focus:ring"
                 placeholder="nandan"
-                value={user?.displayName!}
+                value={user.displayName}
                 type="text"
                 name="name"
                 id=""

@@ -20,17 +20,19 @@ function Home({ posts }: Props): JSX.Element {
   const [city, setCity] = useState("");
   useEffect(() => {
     detectCountry();
-  }, [country]);
+  }, []);
   const detectCountry = async () => {
     const res = await fetch(
       `https://ipinfo.io?token=${process.env.NEXT_PUBLIC_IP_API_TOKEN}`
     );
     const result = await res.json();
     // console.dir(result);
-    setCountry(result.country);
-    setCity(result.city);
+    update(result.country, result.city);
   };
-
+  const update = (country: string, city: string) => {
+    setCity(city);
+    setCountry(country);
+  };
   return (
     <div className="">
       <Head>

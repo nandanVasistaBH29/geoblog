@@ -1,4 +1,3 @@
-import { async } from "@firebase/util";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import Header from "../../components/Header";
@@ -10,8 +9,7 @@ const OneNews = () => {
       `https://ipinfo.io?token=${process.env.NEXT_PUBLIC_IP_API_TOKEN}`
     );
     const result = await res.json();
-    // console.dir(result);
-
+    // console.dir(result)
     setCountry(result.country);
   };
   const router = useRouter();
@@ -72,7 +70,7 @@ const OneNews = () => {
         }
       })
       .catch((error) => console.log("error", error));
-  }, [country]);
+  }, []);
 
   return (
     <div>

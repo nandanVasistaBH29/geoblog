@@ -14,9 +14,12 @@ const TrendingNews = ({ countryCode }) => {
     )
       .then((response) => response.json())
 
-      .then((result) => setArticles(result["articles"].slice(0, 15)))
+      .then((result) => update(result["articles"].slice(0, 15)))
       .catch((error) => console.log("error", error));
   }, []);
+  const update = (data) => {
+    setArticles(data);
+  };
   return (
     <div className="mt-4  p-2 rounded grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6 mt-6 p-2 lg:p-6 lg:mt-6">
       {articles === [] ? (

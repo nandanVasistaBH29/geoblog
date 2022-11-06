@@ -1,12 +1,18 @@
 import Header from "../components/Header";
 import { useState } from "react";
+
 const Contact = () => {
-  const [email, setEmail] = useState("");
-  const [subject, setSubject] = useState("");
-  const [body, setBody] = useState("");
+  const [inputs, setInputs] = useState({
+    email: "",
+    subject: "",
+    body: "",
+  });
+  const handleChange = (e) => {
+    setInputs({ ...inputs, [e.target.name]: e.target.value });
+  };
   const handleClick = () => {
     window.open(
-      `mailto:nandan.vasista.bh@gmail.com?subject=${subject}&body=${body}`
+      `mailto:nandan.vasista.bh@gmail.com?subject=${inputs.subject}&body=${inputs.body}`
     );
   };
   return (
@@ -32,8 +38,9 @@ const Contact = () => {
               <input
                 type="email"
                 id="email"
-                value={email}
-                onChange={() => setEmail(e.target.value)}
+                name="email"
+                value={inputs.email}
+                onChange={(e) => handleChange(e)}
                 className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-orange-500 focus:border-orange-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-orange-500 dark:focus:border-orange-500 dark:shadow-sm-light"
                 placeholder="name@geoblog.com"
                 required
@@ -48,8 +55,9 @@ const Contact = () => {
               </label>
               <input
                 type="text"
-                value={body}
-                onChange={() => setBody(e.target.value)}
+                name="subject"
+                value={inputs.subject}
+                onChange={(e) => handleChange(e)}
                 id="subject"
                 className="block p-3 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 shadow-sm focus:ring-orange-500 focus:border-orange-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-orange-500 dark:focus:border-orange-500 dark:shadow-sm-light"
                 placeholder="Let us know how we can help you"
@@ -64,8 +72,9 @@ const Contact = () => {
                 Your message
               </label>
               <textarea
-                value={email}
-                onChange={() => setEmail(e.target.value)}
+                name="body"
+                value={inputs.body}
+                onChange={(e) => handleChange(e)}
                 id="message"
                 rows="6"
                 className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg shadow-sm border border-gray-300 focus:ring-orange-500 focus:border-orange-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-orange-500 dark:focus:border-orange-500"

@@ -3,12 +3,28 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../utils/firebase";
 import { MdNotificationsActive } from "react-icons/md";
 import { AiFillCloseCircle, AiFillCrown } from "react-icons/ai";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 const Header = () => {
-  const [user, loading] = useAuthState(auth);
+  const [user, setUser] = useState({
+    email: "",
+    displayName: "friend",
+    photoURL: "",
+  });
   const [perm, setPerm] = useState(false);
   const [showMsg, setShowMsg] = useState(false);
-
+  useEffect(() => {
+    const localStr = localStorage.getItem("geoblog-mail");
+    if (localStr === null) return;
+    TheState(localStr);
+  }, []);
+  const TheState = (str: string) => {
+    const data = JSON.parse(str);
+    setUser({
+      email: data.email,
+      displayName: data.displayName,
+      photoURL: data.photoURL,
+    });
+  };
   const handleClick = () => {
     Notification.requestPermission().then((perm) => {
       if (perm === "granted") {
@@ -55,7 +71,7 @@ const Header = () => {
 
         {/* sign in part */}
         <div className="flex items-center space-x-5 text-orange-600">
-          {!user ? (
+          {!user.email ? (
             <>
               <Link href={"/auth/login"}>
                 <h3>Sign in</h3>
@@ -72,16 +88,10 @@ const Header = () => {
             <>
               <div className="flex flex-row-reverse items-center space-x-5 text-orange-600">
                 <Link href="/dashboard">
-                  <img
-                    src={user.photoURL!}
-                    className="rounded-full w-12 mx-2 md:mx-4 lg:mx-8"
-                    alt="avatar"
-                    referrerPolicy="no-referrer"
-                  />
+                  <h3 className="border px-4 py-1 rounded-full border-orange-600">
+                    Hi {user.displayName}
+                  </h3>
                 </Link>
-                <h3 className="border px-4 py-1 rounded-full border-orange-600">
-                  Hi {user.displayName}
-                </h3>
               </div>
             </>
           )}
