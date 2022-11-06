@@ -5,6 +5,8 @@ import Header from "../components/Header";
 import { useRouter } from "next/router";
 const Checkout = () => {
   const route = useRouter();
+  while (typeof window === "undefined") {}
+
   const user = localStorage.getItem("geoblog-mail");
   if (!user) {
     route.push("/auth/register");

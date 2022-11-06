@@ -14,7 +14,6 @@ const Dashboard = () => {
   useEffect(() => {
     const localStr = localStorage.getItem("geoblog-mail");
     while (typeof window === "undefined") {}
-
     if (localStr === null) {
       route.push("/auth/login");
       return;
