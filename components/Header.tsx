@@ -13,7 +13,9 @@ const Header = () => {
   const [perm, setPerm] = useState(false);
   const [showMsg, setShowMsg] = useState(false);
   useEffect(() => {
-    const localStr = localStorage.getItem("geoblog-mail");
+    let localStr;
+    while (typeof window === "undefined") {}
+    localStr = localStorage.getItem("geoblog-mail");
     if (localStr === null) return;
     TheState(localStr);
   }, []);

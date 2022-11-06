@@ -11,6 +11,7 @@ const success = () => {
     if (session_id) handleUpgrade();
   }, [session_id]);
   const handleUpgrade = async () => {
+    while (typeof window === "undefined") {}
     const dataFromLocalStorage = JSON.parse(
       localStorage.getItem("geoblog-mail")
     );

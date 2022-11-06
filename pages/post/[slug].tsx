@@ -30,6 +30,7 @@ const Post = ({ post }: Props) => {
   const [submitted, setSubmitted] = useState(false);
   const [access, setAccess] = useState(false);
   useEffect(() => {
+    while (typeof window === "undefined") {}
     const datafromlocalstorage = JSON.parse(
       localStorage.getItem("geoblog-mail")!
     );

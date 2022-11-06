@@ -63,6 +63,7 @@ export default function Login() {
         password,
       });
       const data = res.data;
+      while (typeof window === "undefined") {}
       if (localStorage.getItem("geoblog-mail")) {
         localStorage.removeItem("geoblog-mail"); // same device can be used by 2 diff accounts
       }
