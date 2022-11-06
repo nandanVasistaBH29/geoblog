@@ -2,6 +2,7 @@ import AdFree from "./products/AdFree";
 import EliteMember from "./products/EliteMember";
 import BecomeAWriter from "./products/BecomeAWriter";
 import Header from "../components/Header";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { checkActionCode } from "firebase/auth";
