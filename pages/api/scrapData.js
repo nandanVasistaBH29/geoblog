@@ -1,7 +1,7 @@
 import axios from "axios";
 import cheerio from "cheerio";
 
-export default async function createComment(req, res) {
+export default async function handler(req, res) {
   const url = req.body;
   let html,
     allParaTags = [];

@@ -1,27 +1,24 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import axios from "axios";
 const TrendingNews = ({ countryCode }) => {
   const [articles, setArticles] = useState([]);
 
-  let requestOptions = {
-    method: "GET",
-    redirect: "follow",
-  };
   useEffect(() => {
-    fetch(
-      `https://saurav.tech/NewsAPI/top-headlines/category/general/${countryCode}.json`,
-      requestOptions
-    )
-      .then((response) => response.json())
-
-      .then((result) => update(result["articles"].slice(0, 15)))
-      .catch((error) => console.log("error", error));
+    getAllArticles();
   }, []);
+  const getAllArticles = async () => {
+    const res = await axios.get(
+      `/api/articles/top-headlines?country=${countryCode}`
+    );
+    console.log(res);
+    setArticles(res.data.articles);
+  };
   const update = (data) => {
     setArticles(data);
   };
   return (
-    <div className="mt-4  p-2 rounded grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6 mt-6 p-2 lg:p-6 lg:mt-6">
+    <div className=" rounded grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6 mt-6 p-2 lg:p-6 lg:mt-6">
       {articles === [] ? (
         <h3>Loading...</h3>
       ) : (

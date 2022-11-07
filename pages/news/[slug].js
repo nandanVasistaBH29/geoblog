@@ -1,3 +1,5 @@
+import { async } from "@firebase/util";
+import axios from "axios";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import Header from "../../components/Header";
@@ -12,8 +14,8 @@ const OneNews = () => {
     // console.dir(result)
     setCountry(result.country);
   };
-  const router = useRouter();
-  const { slug } = router.query;
+  const route = useRouter();
+  const { slug } = route.query;
   const title = slug;
   const countryCode = country;
   const [article, setArticle] = useState({});
@@ -27,51 +29,46 @@ const OneNews = () => {
     detectCountry();
     if (countryCode === undefined) {
       <h1>Sorry Something went wrong</h1>;
-      router.push("/");
+      route.push("/");
     }
-    let allArticles = [],
-      correctIdx = -1;
-    fetch(
-      `https://saurav.tech/NewsAPI/top-headlines/category/general/${countryCode.toLowerCase()}.json`,
-      requestOptions
-    )
-      .then((response) => response.json())
-
-      .then((result) => {
-        allArticles = result["articles"].slice(0, 16);
-
-        for (let i = 0; i < allArticles.length; i++) {
-          if (allArticles[i].title === title) {
-            fetch("/api/scrapData", {
-              method: "POST", // or 'PUT'
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify(allArticles[i].url),
-            })
-              .then((response) => response.json())
-              .then((data) => {
-                setContent(data.p);
-              })
-              .catch((error) => {
-                console.error("Error:", error);
-              });
-
-            correctIdx = i;
-            setArticle({
-              title: allArticles[i].title,
-              author: allArticles[i].author,
-              description: allArticles[i].description,
-              urlToImage: allArticles[i].urlToImage,
-              publishedAt: allArticles[i].publishedAt,
-              url: allArticles[i].url,
-            });
-          }
-        }
-      })
-      .catch((error) => console.log("error", error));
+    makeApiCall();
   }, []);
-
+  const makeApiCall = async () => {
+    const res = await axios.get(
+      `/api/articles/top-headlines?country=${country}`
+    );
+    const allArticles = res.data.articles;
+    let correctIdx = -1;
+    for (let i = 0; i < allArticles.length; i++) {
+      if (allArticles[i].title === title) {
+        correctIdx = i;
+        setArticle({
+          title: allArticles[i].title,
+          author: allArticles[i].author,
+          description: allArticles[i].description,
+          urlToImage: allArticles[i].urlToImage,
+          publishedAt: allArticles[i].publishedAt,
+          url: allArticles[i].url,
+        });
+        fetch("/api/scrapData", {
+          method: "POST", // or 'PUT'
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(allArticles[i].url),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            setContent(data.p);
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+        break;
+      }
+    }
+    if (correctIdx === -1) return;
+  };
   return (
     <div>
       <>
@@ -121,3 +118,34 @@ const OneNews = () => {
 };
 
 export default OneNews;
+
+/**
+ *  for (let i = 0; i < allArticles.length; i++) {
+          if (allArticles[i].title === title) {
+            fetch("/api/scrapData", {
+              method: "POST", // or 'PUT'
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(allArticles[i].url),
+            })
+              .then((response) => response.json())
+              .then((data) => {
+                setContent(data.p);
+              })
+              .catch((error) => {
+                console.error("Error:", error);
+              });
+
+            correctIdx = i;
+            setArticle({
+              title: allArticles[i].title,
+              author: allArticles[i].author,
+              description: allArticles[i].description,
+              urlToImage: allArticles[i].urlToImage,
+              publishedAt: allArticles[i].publishedAt,
+              url: allArticles[i].url,
+            });
+            return;
+          }
+ */
