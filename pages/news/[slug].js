@@ -1,4 +1,3 @@
-import { async } from "@firebase/util";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
@@ -18,15 +17,10 @@ const OneNews = () => {
   const route = useRouter();
   const { slug } = route.query;
   const title = slug;
-  console.log(title);
   const countryCode = country;
   const [article, setArticle] = useState({});
   const [content, setContent] = useState([]);
 
-  let requestOptions = {
-    method: "GET",
-    redirect: "follow",
-  };
   useEffect(() => {
     detectCountry();
     if (countryCode === undefined) {
