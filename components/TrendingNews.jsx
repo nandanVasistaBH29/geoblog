@@ -8,12 +8,28 @@ const TrendingNews = ({ countryCode }) => {
     getAllArticles();
   }, []);
   const getAllArticles = async () => {
-    const res = await axios.get(
-      `https://nextjs-cors-anywhere.vercel.app/api?endpoint=https://newsapi.org/v2/top-headlines?country=${countryCode}&apiKey=${process.env.NEXT_PUBLIC_NEWS_API_KEY}`
+    // check if i have in redis frontend->backend->redis
+    const resp = await axios.get(
+      `/api/articles/top-headlines?country=${countryCode}`
     );
-    console.log(countryCode);
-    console.log(res);
-    setArticles(res.data.articles);
+
+    if (!resp.data.error) {
+      setArticles(resp.data);
+    } else {
+      //else calculate it
+      const res = await axios.get(
+        `https://nextjs-cors-anywhere.vercel.app/api?endpoint=https://newsapi.org/v2/top-headlines?country=${countryCode}&apiKey=${process.env.NEXT_PUBLIC_NEWS_API_KEY}`
+      );
+      // save it in redis
+      console.log("====================================");
+      console.log(res);
+      console.log("====================================");
+      setArticles(res.data.articles);
+      const response = await axios.post(
+        `/api/articles/set-top-headlines?country=${countryCode}`,
+        { articles: res.data.articles }
+      );
+    }
   };
   return (
     <div className=" rounded grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6 mt-6 p-2 lg:p-6 lg:mt-6">
