@@ -1,6 +1,7 @@
 import axios from "axios";
 import Redis from "ioredis";
 const DEFAULT_EXP = 60 * 60 * 4; //4hrs
+const proxyUrl = "https://cors-anywhere.herokuapp.com/";
 const redisClient = new Redis({ url: process.env.REDIS_URL });
 redisClient.connect();
 export default async function handler(req, res) {
@@ -17,7 +18,7 @@ export default async function handler(req, res) {
       } else {
         console.log("miss");
         const response = await axios.get(
-          `https://newsapi.org/v2/top-headlines?country=${country}&apiKey=${process.env.NEWS_API_KEY}`
+          `${proxyUrl}https://newsapi.org/v2/top-headlines?country=${country}&apiKey=${process.env.NEWS_API_KEY}`
         );
         // console.log(response.data);
         redisClient.setex(

@@ -11,6 +11,7 @@ const TrendingNews = ({ countryCode }) => {
     const res = await axios.get(
       `/api/articles/top-headlines?country=${countryCode}`
     );
+    console.log(countryCode);
     console.log(res);
     console.log(res.data);
     console.log(res.data.articles);
