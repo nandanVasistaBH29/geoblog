@@ -1,7 +1,7 @@
 import axios from "axios";
 import Redis from "ioredis";
 const DEFAULT_EXP = 60 * 60 * 4; //4hrs
-const proxyUrl = "https://news-proxy.vercel.app/";
+const proxyUrl = "https://nextjs-cors-anywhere.vercel.app/";
 const redisClient = new Redis({ url: process.env.REDIS_URL });
 redisClient.connect();
 export default async function handler(req, res) {

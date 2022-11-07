@@ -10,6 +10,7 @@ const OneNews = () => {
     const res = await fetch(
       `https://ipinfo.io?token=${process.env.NEXT_PUBLIC_IP_API_TOKEN}`
     );
+
     const result = await res.json();
     // console.dir(result)
     setCountry(result.country);
@@ -36,7 +37,9 @@ const OneNews = () => {
     const allArticles = res.data.articles;
     let correctIdx = -1;
     for (let i = 0; i < allArticles.length; i++) {
+      console.log(allArticles[i].title === title);
       if (allArticles[i].title === title) {
+        console.log("jix");
         correctIdx = i;
         setArticle({
           title: allArticles[i].title,
