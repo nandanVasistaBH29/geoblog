@@ -18,6 +18,7 @@ const OneNews = () => {
   const route = useRouter();
   const { slug } = route.query;
   const title = slug;
+  console.log(title);
   const countryCode = country;
   const [article, setArticle] = useState({});
   const [content, setContent] = useState([]);

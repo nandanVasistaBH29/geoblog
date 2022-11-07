@@ -12,10 +12,9 @@ const TrendingNews = ({ countryCode }) => {
       `/api/articles/top-headlines?country=${countryCode}`
     );
     console.log(res);
+    console.log(res.data);
+    console.log(res.data.articles);
     setArticles(res.data.articles);
-  };
-  const update = (data) => {
-    setArticles(data);
   };
   return (
     <div className=" rounded grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6 mt-6 p-2 lg:p-6 lg:mt-6">

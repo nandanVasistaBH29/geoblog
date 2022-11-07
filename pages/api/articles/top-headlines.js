@@ -1,6 +1,5 @@
 import axios from "axios";
 import Redis from "ioredis";
-const NewsAPI = require("newsapi");
 const DEFAULT_EXP = 60 * 60 * 4; //4hrs
 const redisClient = new Redis({ url: process.env.REDIS_URL });
 redisClient.connect();
@@ -12,7 +11,7 @@ export default async function handler(req, res) {
     `articlesByApiTEST?country=${country}`,
     async (err, articles) => {
       if (err) console.error(err);
-      if (articles != null) {
+      else if (articles != null) {
         console.log("hit", country);
         return res.send(JSON.parse(articles));
       } else {
