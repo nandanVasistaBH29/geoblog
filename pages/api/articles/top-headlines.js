@@ -17,10 +17,8 @@ export default async function handler(req, res) {
         return res.send(JSON.parse(articles));
       } else {
         console.log("miss");
-        const url =
-          proxyUrl +
-          `https://newsapi.org/v2/top-headlines?country=${country}&apiKey=${process.env.NEWS_API_KEY}`;
-
+        const url = `https://newsapi.org/v2/top-headlines?country=${country}&apiKey=${process.env.NEWS_API_KEY}`;
+        console.log(url);
         const response = await axios.get(url);
         // console.log(response.data);
         redisClient.setex(
