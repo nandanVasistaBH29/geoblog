@@ -9,12 +9,10 @@ const TrendingNews = ({ countryCode }) => {
   }, []);
   const getAllArticles = async () => {
     const res = await axios.get(
-      `/api/articles/top-headlines?country=${countryCode}`
+      `https://nextjs-cors-anywhere.vercel.app/api?endpoint=https://newsapi.org/v2/top-headlines?country=${countryCode}&apiKey=${process.env.NEXT_PUBLIC_NEWS_API_KEY}`
     );
     console.log(countryCode);
     console.log(res);
-    console.log(res.data);
-    console.log(res.data.articles);
     setArticles(res.data.articles);
   };
   return (
@@ -27,7 +25,7 @@ const TrendingNews = ({ countryCode }) => {
             return (
               <div>
                 {
-                  <Link key={article.title} href={`/news/${article.title}`}>
+                  <Link key={article.title} href={"/"}>
                     <div className="overflow-hidden group cursor-pointer border rounded-lg shadow-2xl	shadow-orange-500/50  ">
                       <img
                         className="h-60 w-full object-cover group-hover:scale-105 transition-transform duration-200 ease-in-out"
