@@ -1,7 +1,7 @@
 import axios from "axios";
 import Redis from "ioredis";
 const DEFAULT_EXP = 60 * 60 * 4; //4hrs
-const proxyUrl = "https://nextjs-cors-anywhere.vercel.app/";
+const proxyUrl = "https://nextjs-cors-anywhere.vercel.app/api?endpoint=";
 const redisClient = new Redis({ url: process.env.REDIS_URL });
 redisClient.connect();
 export default async function handler(req, res) {
@@ -17,9 +17,11 @@ export default async function handler(req, res) {
         return res.send(JSON.parse(articles));
       } else {
         console.log("miss");
-        const response = await axios.get(
-          `${proxyUrl}https://newsapi.org/v2/top-headlines?country=${country}&apiKey=${process.env.NEWS_API_KEY}`
-        );
+        const url =
+          proxyUrl +
+          `https://newsapi.org/v2/top-headlines?country=${country}&apiKey=${process.env.NEWS_API_KEY}`;
+
+        const response = await axios.get(url);
         // console.log(response.data);
         redisClient.setex(
           `articlesByApiTEST?country=${country}`,
