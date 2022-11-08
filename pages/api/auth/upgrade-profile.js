@@ -10,7 +10,6 @@ export default function handler(req, res) {
     return res.status(404).json("some shit happened");
   }
   let q;
-  console.log("====================================");
 
   if (upgrade === "1") {
     //pro
