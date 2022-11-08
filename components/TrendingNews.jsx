@@ -31,7 +31,16 @@ const TrendingNews = ({ countryCode }) => {
         setArticles(resp.data);
       }
     } catch (err) {
-      console.log(err);
+      const res = await axios.get(
+        `https://nextjs-cors-anywhere.vercel.app/api?endpoint=https://newsapi.org/v2/top-headlines?country=${countryCode}&apiKey=${process.env.NEXT_PUBLIC_NEWS_API_KEY}`
+      );
+      console.log(res.data.articles);
+      setArticles(res.data.articles);
+      const response = await axios.post(
+        `/api/articles/set-top-headlines?country=${countryCode}`,
+        { articles: res.data.articles }
+      );
+      console.log(response);
     }
   };
   return (
