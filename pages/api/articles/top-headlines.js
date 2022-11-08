@@ -5,7 +5,7 @@ export default async function handler(req, res) {
   const country = req.query.country;
 
   redisClient.get(
-    `articlesByApiTEST4?country=${country}`,
+    `articlesByApiTEST6?country=${country}`,
     async (err, articles) => {
       if (err) console.error(err);
       else if (articles != null) {
