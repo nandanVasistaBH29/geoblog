@@ -1,5 +1,5 @@
 import Redis from "ioredis";
-const DEFAULT_EXP = 60 * 60 * 6; //4hrs
+const DEFAULT_EXP = 60 * 60 * 6; //6hrs
 const redisClient = new Redis({ url: process.env.REDIS_URL });
 redisClient.connect();
 export default async function handler(req, res) {

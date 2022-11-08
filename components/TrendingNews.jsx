@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import axios from "axios";
-import { resolve } from "path";
 const TrendingNews = ({ countryCode }) => {
   const [articles, setArticles] = useState([]);
 
@@ -14,22 +13,19 @@ const TrendingNews = ({ countryCode }) => {
       `/api/articles/top-headlines?country=${countryCode}`
     );
 
-    if (!resp.data.error && resp.status !== 500) {
-      setArticles(resp.data);
-    } else {
+    if (resp.data.error) {
       //else calculate it
       const res = await axios.get(
         `https://nextjs-cors-anywhere.vercel.app/api?endpoint=https://newsapi.org/v2/top-headlines?country=${countryCode}&apiKey=${process.env.NEXT_PUBLIC_NEWS_API_KEY}`
       );
-      // save it in redis
-      console.log("====================================");
-      console.log(res);
-      console.log("====================================");
       setArticles(res.data.articles);
       const response = await axios.post(
         `/api/articles/set-top-headlines?country=${countryCode}`,
         { articles: res.data.articles }
       );
+      console.log(response);
+    } else {
+      setArticles(resp.data);
     }
   };
   return (
