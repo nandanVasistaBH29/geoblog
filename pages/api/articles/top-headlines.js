@@ -3,7 +3,6 @@ const redisClient = new Redis({ url: process.env.REDIS_URL });
 redisClient.connect();
 export default async function handler(req, res) {
   const country = req.query.country;
-  console.log("hi" + country);
 
   redisClient.get(
     `articlesByApiTEST4?country=${country}`,

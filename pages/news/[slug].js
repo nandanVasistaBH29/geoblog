@@ -5,26 +5,14 @@ import { useState, useEffect } from "react";
 import Header from "../../components/Header";
 
 const OneNews = () => {
-  const [country, setCountry] = useState("");
-  const detectCountry = async () => {
-    const res = await fetch(
-      `https://ipinfo.io?token=${process.env.NEXT_PUBLIC_IP_API_TOKEN}`
-    );
-
-    const result = await res.json();
-    // console.dir(result)
-    setCountry(result.country);
-  };
   const route = useRouter();
-  const { slug } = route.query;
-  const title = slug;
-  const countryCode = country;
-  const [article, setArticle] = useState({});
+  const [article, setArticle] = useState([]);
   const [content, setContent] = useState([]);
+  const title = route.query.slug;
+  const country = route.query.country;
 
   useEffect(() => {
-    detectCountry();
-    if (countryCode === undefined) {
+    if (country === undefined) {
       <h1>Sorry Something went wrong</h1>;
       route.push("/");
     }
@@ -34,12 +22,10 @@ const OneNews = () => {
     const res = await axios.get(
       `/api/articles/top-headlines?country=${country}`
     );
-    const allArticles = res.data.articles;
+    const allArticles = res.data;
     let correctIdx = -1;
     for (let i = 0; i < allArticles.length; i++) {
-      console.log(allArticles[i].title === title);
       if (allArticles[i].title === title) {
-        console.log("jix");
         correctIdx = i;
         setArticle({
           title: allArticles[i].title,

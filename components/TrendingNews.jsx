@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import axios from "axios";
+import { resolve } from "path";
 const TrendingNews = ({ countryCode }) => {
   const [articles, setArticles] = useState([]);
 
@@ -13,7 +14,7 @@ const TrendingNews = ({ countryCode }) => {
       `/api/articles/top-headlines?country=${countryCode}`
     );
 
-    if (!resp.data.error) {
+    if (!resp.data.error && resp.status !== 500) {
       setArticles(resp.data);
     } else {
       //else calculate it
@@ -41,7 +42,10 @@ const TrendingNews = ({ countryCode }) => {
             return (
               <div>
                 {
-                  <Link key={article.title} href={"/"}>
+                  <Link
+                    key={index}
+                    href={`/news/${article.title}?country=${countryCode}`}
+                  >
                     <div className="overflow-hidden group cursor-pointer border rounded-lg shadow-2xl	shadow-orange-500/50  ">
                       <img
                         className="h-60 w-full object-cover group-hover:scale-105 transition-transform duration-200 ease-in-out"
