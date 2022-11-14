@@ -56,8 +56,8 @@ const Header = () => {
             GeoBlog
           </Link>
           <div className="hidden md:inline-flex items-center space-x-5">
-            <Link href={"/about"}>
-              <h3>About</h3>
+            <Link href={"/write"}>
+              <h3 className="font-bold font-sans text-orange-400">Write</h3>
             </Link>
             <Link href={"/contact"}>
               <h3>Contact</h3>

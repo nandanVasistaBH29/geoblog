@@ -1,26 +1,30 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import axios from "axios";
+import { useRouter } from "next/router";
 const TrendingNews = ({ countryCode }) => {
   const [articles, setArticles] = useState([]);
-
+  const route = useRouter();
   useEffect(() => {
     getAllArticles();
-  }, []);
+  }, [countryCode]);
+
   const getAllArticles = async () => {
-    // check if i have in redis frontend->backend->redis
     let resp;
     try {
+      if (!countryCode) {
+        const url = route.query;
+        countryCode = url.split("/")[3];
+      }
       resp = await axios.get(
         `/api/articles/top-headlines?country=${countryCode}`
       );
-      console.log(resp);
-      if (resp.data.error) {
+      if (resp.data.error === null || resp.data === null) {
         //else calculate it
+        console.log("calling news api");
         const res = await axios.get(
           `https://nextjs-cors-anywhere.vercel.app/api?endpoint=https://newsapi.org/v2/top-headlines?country=${countryCode}&apiKey=${process.env.NEXT_PUBLIC_NEWS_API_KEY}`
         );
-        console.log(res.data.articles);
         setArticles(res.data.articles);
         const response = await axios.post(
           `/api/articles/set-top-headlines?country=${countryCode}`,
@@ -31,16 +35,7 @@ const TrendingNews = ({ countryCode }) => {
         setArticles(resp.data);
       }
     } catch (err) {
-      const res = await axios.get(
-        `https://nextjs-cors-anywhere.vercel.app/api?endpoint=https://newsapi.org/v2/top-headlines?country=${countryCode}&apiKey=${process.env.NEXT_PUBLIC_NEWS_API_KEY}`
-      );
-      console.log(res.data.articles);
-      setArticles(res.data.articles);
-      const response = await axios.post(
-        `/api/articles/set-top-headlines?country=${countryCode}`,
-        { articles: res.data.articles }
-      );
-      console.log(response);
+      console.log(err);
     }
   };
   return (
@@ -53,10 +48,7 @@ const TrendingNews = ({ countryCode }) => {
             return (
               <div>
                 {
-                  <Link
-                    key={index}
-                    href={`/news/${article.title}?country=${countryCode}`}
-                  >
+                  <Link key={index} href={`/`}>
                     <div className="overflow-hidden group cursor-pointer border rounded-lg shadow-2xl	shadow-orange-500/50  ">
                       <img
                         className="h-60 w-full object-cover group-hover:scale-105 transition-transform duration-200 ease-in-out"

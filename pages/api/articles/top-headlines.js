@@ -1,19 +1,16 @@
-import Redis from "ioredis";
-const redisClient = new Redis({ url: process.env.REDIS_URL });
-redisClient.connect();
+import { redis } from "../../../utils/redis";
 export default async function handler(req, res) {
+  console.log(redis);
   const country = req.query.country;
-
-  redisClient.get(
-    `articlesByApiTEST?country=${country}`,
-    async (err, articles) => {
-      if (err) console.error(err);
-      else if (articles != null) {
-        console.log("hit", articles);
-        return res.send(JSON.parse(articles));
-      } else {
-        return res.send({ error: "no data" });
-      }
+  console.log(country);
+  await redis.get(`articlesByApiTEST:${country}`, async (error, articles) => {
+    console.log(error, articles);
+    if (error) {
+      console.error("hoge", articles);
+    } else if (articles != null) {
+      return res.send(JSON.parse(articles));
+    } else {
+      return res.send({ error: error });
     }
-  );
+  });
 }
