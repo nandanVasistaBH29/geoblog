@@ -7,7 +7,7 @@ export default async function handler(req, res) {
   console.log(articles, country);
   try {
     await redis.setex(
-      `articlesByApiTEST:${country}`,
+      `articlesByApiTEST101:${country}`,
       DEFAULT_EXP,
       JSON.stringify(articles)
     );

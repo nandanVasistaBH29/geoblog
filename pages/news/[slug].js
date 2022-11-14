@@ -4,55 +4,49 @@ import { useState, useEffect } from "react";
 //added env
 import Header from "../../components/Header";
 
-const OneNews = () => {
-  const route = useRouter();
+const OneNews = ({}) => {
   const [article, setArticle] = useState([]);
   const [content, setContent] = useState([]);
-  const title = route.query.slug;
-  const country = route.query.country;
 
   useEffect(() => {
-    if (country === undefined) {
-      <h1>Sorry Something went wrong</h1>;
-      route.push("/");
+    const { data } = getQueryParams(window.location.search);
+    const art = JSON.parse(data);
+    setArticle(art);
+    if (art.url) {
+      console.log("====================================");
+      console.log(art.url);
+      console.log("====================================");
+      makeApiCall(art.url);
     }
-    makeApiCall();
   }, []);
-  const makeApiCall = async () => {
-    const res = await axios.get(
-      `/api/articles/top-headlines?country=${country}`
-    );
-    const allArticles = res.data;
-    let correctIdx = -1;
-    for (let i = 0; i < allArticles.length; i++) {
-      if (allArticles[i].title === title) {
-        correctIdx = i;
-        setArticle({
-          title: allArticles[i].title,
-          author: allArticles[i].author,
-          description: allArticles[i].description,
-          urlToImage: allArticles[i].urlToImage,
-          publishedAt: allArticles[i].publishedAt,
-          url: allArticles[i].url,
-        });
-        fetch("/api/scrapData", {
-          method: "POST", // or 'PUT'
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(allArticles[i].url),
-        })
-          .then((response) => response.json())
-          .then((data) => {
-            setContent(data.p);
-          })
-          .catch((error) => {
-            console.error("Error:", error);
-          });
-        break;
-      }
-    }
-    if (correctIdx === -1) return;
+  const getQueryParams = (query) => {
+    return query
+      ? (/^[?#]/.test(query) ? query.slice(1) : query)
+          .split("&")
+          .reduce((params, param) => {
+            let [key, value] = param.split("=");
+            params[key] = value
+              ? decodeURIComponent(value.replace(/\+/g, " "))
+              : "";
+            return params;
+          }, {})
+      : {};
+  };
+  const makeApiCall = async (url) => {
+    await fetch("/api/scrapData", {
+      method: "POST", // or 'PUT'
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(url),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setContent(data.p);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
   };
   return (
     <div>

@@ -48,7 +48,13 @@ const TrendingNews = ({ countryCode }) => {
             return (
               <div>
                 {
-                  <Link key={index} href={`/`}>
+                  <Link
+                    key={index}
+                    href={{
+                      pathname: `/news/${index}`,
+                      query: { data: JSON.stringify(article) },
+                    }}
+                  >
                     <div className="overflow-hidden group cursor-pointer border rounded-lg shadow-2xl	shadow-orange-500/50  ">
                       <img
                         className="h-60 w-full object-cover group-hover:scale-105 transition-transform duration-200 ease-in-out"
