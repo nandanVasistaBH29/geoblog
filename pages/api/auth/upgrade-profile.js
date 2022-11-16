@@ -7,7 +7,7 @@ export default function handler(req, res) {
   const { email } = req.body;
   console.log(upgrade);
   if (!upgrade || !email) {
-    return res.status(404).json("some shit happened");
+    return res.status(404).json({ error: "no upgrade or email" });
   }
   let q;
 
@@ -24,7 +24,7 @@ export default function handler(req, res) {
   console.log(q);
   db.query(q, [], (err, data) => {
     if (err) {
-      return res.status(404).json("some shit happened");
+      return res.status(404).json({ error: err });
     }
     console.log(data);
     res.status(200).json("osum");

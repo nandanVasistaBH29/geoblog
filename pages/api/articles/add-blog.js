@@ -19,12 +19,12 @@ export default async function handler(req, res) {
   S3.upload(params, async (error, data) => {
     if (error) {
       console.log(error);
-      return res.status(404).json({ error: "some shit happened" });
+      return res.status(404).json({ error: error });
     }
     const q = `insert into Posts (title,description,bodyURL,slug,categories,uid) values ("${obj.title}","${obj.description}","${data.Location}","${obj.slug}","${obj.categories}",${obj.uid})`;
     db.query(q, [], (err, data) => {
       if (err) {
-        return res.status(404).json({ error: "some shit happened" });
+        return res.status(404).json({ error: err });
       }
       res.status(200).json({ success: "YAY new blog created" });
     });
