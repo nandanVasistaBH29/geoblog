@@ -10,8 +10,6 @@ export default function handler(req, res) {
   let q;
 
   if (access === "1") {
-    //pro
-    console.log("sd");
     q = `select id from users where email="${email}" and isPro=1`;
   } else if (access === "2") {
     q = `select id from users where email="${email}" and isWriter=1`;
@@ -19,7 +17,7 @@ export default function handler(req, res) {
   console.log(q);
   db.query(q, [], (err, data) => {
     if (err) {
-      return res.status(404).json("some shit happened");
+      return res.status(404).json({ error: err });
     }
     if (data.length == 0) {
       return res.status(404).json({ error: "Don't have write access" });

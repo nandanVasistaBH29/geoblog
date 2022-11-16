@@ -73,20 +73,23 @@ const Write = () => {
     }
   };
   const postIt = async () => {
-    if (!email || !title || !value || !slug || !uid) {
-      alert("enter email,title and then get a slug and write content");
-      return;
+    try {
+      if (!email || !title || !value || !slug || !uid) {
+        alert("enter email,title and then get a slug and write content");
+        return;
+      }
+      console.log(value);
+      const res = await axios.post("api/articles/add-blog", {
+        title,
+        description: body.slice(0, 20),
+        body: value,
+        slug,
+        categories: null,
+        uid,
+      });
+    } catch (err) {
+      console.log(err);
     }
-    // console.log(value.root.innerHTML.trim());
-    console.log(value);
-    const res = await axios.post("api/articles/add-blog", {
-      title,
-      description: body.slice(0, 20),
-      body: value,
-      slug,
-      categories: null,
-      uid,
-    });
   };
   return (
     <div>
