@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 
 import axios from "axios";
 import Header from "../../components/Header";
-import { sanitize } from "dompurify";
+import DOMPurify from "isomorphic-dompurify";
 
 const Get = () => {
   const route = useRouter();
@@ -24,7 +24,8 @@ const Get = () => {
         const bodyURL = res.data.blog[0].bodyURL;
         console.log(bodyURL);
         const res2 = await axios.get(bodyURL);
-        setBody(res2.data);
+        const clean = DOMPurify.sanitize(res2.data);
+        setBody(clean);
       }
     } catch (err) {
       console.log(err);
@@ -50,7 +51,7 @@ const Get = () => {
               </p>
             </div>
             <div className="px-[2vw] max-w-5xl">
-              <div dangerouslySetInnerHTML={{ __html: sanitize(body) }} />
+              <div dangerouslySetInnerHTML={{ __html: body }} />
             </div>
           </article>
         )}
