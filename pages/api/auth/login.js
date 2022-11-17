@@ -52,5 +52,6 @@ export default function handler(req, res) {
       //Set-Cookie is the name of the header
       res.status(200).json(other);
     });
+    db.close();
   });
 }

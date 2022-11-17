@@ -13,5 +13,6 @@ export default function handler(req, res) {
       }
       return res.json("granted");
     });
+    db.close();
   });
 }

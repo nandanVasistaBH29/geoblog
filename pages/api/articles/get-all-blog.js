@@ -10,5 +10,6 @@ export default function getAll(req, res) {
       }
       res.status(200).json({ blogs: data });
     });
+    db.close();
   });
 }

@@ -52,6 +52,7 @@ const Write = () => {
   const verifyEmail = async () => {
     setAccess(false);
     setError(false);
+    console.log(email);
     try {
       const res = await axios.post("/api/auth/verify-access", {
         email: email,
@@ -59,6 +60,7 @@ const Write = () => {
       });
       if (!res.data.error) {
         setAccess(true);
+        console.log(res.data.uid);
         setUid(res.data.uid[0].id);
         return;
       }
