@@ -1,4 +1,4 @@
-import { db } from "../../../utils/connectDb";
+import { pool } from "../../../utils/connectDb";
 // 1-> adfree idofPurcase
 // 2-> become a writer
 // 3-> become a elite member
@@ -14,15 +14,17 @@ export default function handler(req, res) {
   } else if (access === "2") {
     q = `select id from users where email="${email}" and isWriter=1`;
   }
-  console.log(q);
-  db.query(q, [], (err, data) => {
-    if (err) {
-      return res.status(404).json({ error: err });
-    }
-    if (data.length == 0) {
-      return res.status(404).json({ error: "Don't have write access" });
-    }
-    console.log(data);
-    res.status(200).json({ uid: data });
+  pool.getConnection(function (err, db) {
+    if (err) return res.json(err);
+    db.query(q, [], (err, data) => {
+      if (err) {
+        return res.status(404).json({ error: err });
+      }
+      if (data.length == 0) {
+        return res.status(404).json({ error: "Don't have write access" });
+      }
+      console.log(data);
+      res.status(200).json({ uid: data });
+    });
   });
 }

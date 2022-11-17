@@ -40,10 +40,12 @@ const Post = ({ post }: Props) => {
     checkIfUserHasPROaccount(datafromlocalstorage.email);
   }, []);
   const checkIfUserHasPROaccount = async (email: string) => {
+    console.log(email);
     try {
-      const res = await axios.get(
-        `/api/auth/check-permision?q=${email}&id=isPro`
-      );
+      const res = await axios.post(`/api/auth/verify-access`, {
+        email: email,
+        access: "1",
+      });
       setAccess(true);
       console.log(res);
     } catch (err) {

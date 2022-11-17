@@ -81,7 +81,7 @@ const Write = () => {
       console.log(value);
       const res = await axios.post("api/articles/add-blog", {
         title,
-        description: body.slice(0, 20),
+        description: value.slice(0, 20),
         body: value,
         slug,
         categories: null,

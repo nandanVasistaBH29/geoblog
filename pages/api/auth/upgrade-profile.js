@@ -1,4 +1,4 @@
-import { db } from "../../../utils/connectDb";
+import { pool } from "../../../utils/connectDb";
 // 1-> adfree idofPurcase
 // 2-> become a writer
 // 3-> become a elite member
@@ -13,7 +13,6 @@ export default function handler(req, res) {
 
   if (upgrade === "1") {
     //pro
-    console.log("sd");
     q = `update users set isPro=1 where email="${email}"`;
   } else if (upgrade === "2") {
     q = `update users set isWriter=1 where email="${email}"`;
@@ -21,12 +20,14 @@ export default function handler(req, res) {
     //elitemember
     q = `update users set isEliteMember=1 where email="${email}"`;
   }
-  console.log(q);
-  db.query(q, [], (err, data) => {
-    if (err) {
-      return res.status(404).json({ error: err });
-    }
-    console.log(data);
-    res.status(200).json("osum");
+  pool.getConnection(function (err, db) {
+    if (err) return res.json(err);
+    db.query(q, [], (err, data) => {
+      if (err) {
+        return res.status(404).json({ error: err });
+      }
+      console.log(data);
+      res.status(200).json("osum");
+    });
   });
 }
