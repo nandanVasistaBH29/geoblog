@@ -10,9 +10,9 @@ export default function handler(req, res) {
   let q;
 
   if (access === "1") {
-    q = `select id from users where email="${email}" and isPro=1`;
+    q = `select uid from users where email="${email}" and isPro=1`;
   } else if (access === "2") {
-    q = `select id from users where email="${email}" and isWriter=1`;
+    q = `select uid from users where email="${email}" and isWriter=1`;
   }
   pool.getConnection(function (err, db) {
     if (err) return res.json(err);

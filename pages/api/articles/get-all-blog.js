@@ -1,7 +1,7 @@
 import { pool } from "../../../utils/connectDb";
 
 export default function getAll(req, res) {
-  const q = `select title,description,id from Posts`;
+  const q = `select title,description,pid from Posts`;
   pool.getConnection(function (err, db) {
     if (err) return res.json(err);
     db.query(q, [], (err, data) => {

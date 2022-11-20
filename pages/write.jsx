@@ -60,8 +60,7 @@ const Write = () => {
       });
       if (!res.data.error) {
         setAccess(true);
-        console.log(res.data.uid);
-        setUid(res.data.uid[0].id);
+        setUid(res.data.uid[0].uid);
         return;
       }
     } catch (err) {
@@ -76,6 +75,7 @@ const Write = () => {
   };
   const postIt = async () => {
     try {
+      console.log(email, title, value, slug, uid);
       if (!email || !title || !value || !slug || !uid) {
         alert("enter email,title and then get a slug and write content");
         return;
@@ -89,6 +89,7 @@ const Write = () => {
         categories: null,
         uid,
       });
+      console.log(res);
     } catch (err) {
       console.log(err);
     }
