@@ -26,6 +26,5 @@ export default function handler(req, res) {
       console.log(data);
       res.status(200).json({ uid: data });
     });
-    db.close();
   });
 }

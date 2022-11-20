@@ -12,6 +12,5 @@ export default function getParticular(req, res) {
       }
       res.status(200).json({ blog: data });
     });
-    db.close();
   });
 }

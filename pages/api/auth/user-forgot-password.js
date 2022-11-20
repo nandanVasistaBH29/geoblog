@@ -32,6 +32,5 @@ export default function handler(req, res) {
         return res.status(404).json("something went wrong");
       res.status(201).json("updated");
     });
-    db.close();
   });
 }

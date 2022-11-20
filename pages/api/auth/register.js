@@ -52,6 +52,5 @@ export default function handler(req, res) {
         return res.status(200).json("user has been created");
       });
     });
-    db.close();
   });
 }
