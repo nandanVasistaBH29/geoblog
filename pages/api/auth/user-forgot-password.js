@@ -26,11 +26,15 @@ export default function handler(req, res) {
     db.query(q2, (err, data) => {
       if (err) {
         console.log(err);
+        db.release();
         return res.json({ err });
       }
-      if (data.length === 0)
+      if (data.length === 0) {
+        db.release();
         return res.status(404).json("something went wrong");
+      }
       res.status(201).json("updated");
+      db.release();
     });
   });
 }

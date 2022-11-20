@@ -29,6 +29,7 @@ export default async function handler(req, res) {
           return res.status(404).json({ error: err });
         }
         res.status(200).json({ success: "YAY new blog created" });
+        db.release();
       });
     });
   });

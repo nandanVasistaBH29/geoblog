@@ -24,10 +24,11 @@ export default function handler(req, res) {
     if (err) return res.json(err);
     db.query(q, [], (err, data) => {
       if (err) {
+        db.release();
         return res.status(404).json({ error: err });
       }
-      console.log(data);
       res.status(200).json("osum");
+      db.release();
     });
   });
 }

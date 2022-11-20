@@ -9,6 +9,7 @@ export default function getAll(req, res) {
         return res.status(404).json({ error: err });
       }
       res.status(200).json({ blogs: data });
+      db.release();
     });
   });
 }

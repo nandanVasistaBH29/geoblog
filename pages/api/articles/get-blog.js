@@ -11,6 +11,7 @@ export default function getParticular(req, res) {
         return res.status(404).json({ error: err });
       }
       res.status(200).json({ blog: data });
+      db.release();
     });
   });
 }

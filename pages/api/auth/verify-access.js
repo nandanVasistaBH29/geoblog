@@ -18,13 +18,15 @@ export default function handler(req, res) {
     if (err) return res.json(err);
     db.query(q, [], (err, data) => {
       if (err) {
+        db.release();
         return res.status(404).json({ error: err });
       }
       if (data.length == 0) {
+        db.release();
         return res.status(404).json({ error: "Don't have write access" });
       }
-      console.log(data);
       res.status(200).json({ uid: data });
+      db.release();
     });
   });
 }

@@ -30,6 +30,7 @@ export default function handler(req, res) {
       console.log(values);
       db.query(q, [values], (err, data) => {
         if (err) {
+          db.release();
           return res.json({ err });
         }
         //using jwt
@@ -49,6 +50,7 @@ export default function handler(req, res) {
         );
         console.log(token);
         //Set-Cookie is the name of the header
+        db.release();
         return res.status(200).json("user has been created");
       });
     });

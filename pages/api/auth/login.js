@@ -23,18 +23,22 @@ export default function handler(req, res) {
         return res.json({ err });
       }
       const user_password = req.body.password;
-      if (data.length === 0)
+      if (data.length === 0) {
+        db.release();
         return res
           .status(404)
           .json("Email hasn't register Please register first");
+      }
       // compare password
       if (user_password) {
         const isPasswordCorrect = bcrypt.compareSync(
           user_password,
           data[0].password
         ); // true;
-        if (!isPasswordCorrect)
+        if (!isPasswordCorrect) {
+          db.release();
           return res.status(404).json("Either Password or email is wrong");
+        }
       }
       //using jwt
       const token = jwt.sign({ id: data[0].id }, process.env.JWT_SECRET);
@@ -51,6 +55,7 @@ export default function handler(req, res) {
       );
       //Set-Cookie is the name of the header
       res.status(200).json(other);
+      db.release();
     });
   });
 }
