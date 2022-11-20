@@ -71,6 +71,12 @@ const Post = ({ post }: Props) => {
         setSubmitted(false);
       });
   };
+  const speak = () => {
+    console.log();
+    let msg = new SpeechSynthesisUtterance();
+    msg.text = document.body.innerText;
+    speechSynthesis.speak(msg);
+  };
   return (
     <>
       <main>
@@ -86,7 +92,6 @@ const Post = ({ post }: Props) => {
           <h2 className="text-xl font-light text-gray-300 mb-2">
             {post[0].description}
           </h2>
-
           <div className="flex items-center space-x-2">
             {post[0].author?.image && (
               <img
@@ -101,6 +106,14 @@ const Post = ({ post }: Props) => {
               Published @ {new Date(post[0]._createdAt).toLocaleString()}
             </p>
           </div>
+          {access && (
+            <button
+              className="bg-orange-600 text-xl p-2 m-2 text-white rounded-lg"
+              onClick={speak}
+            >
+              Narate
+            </button>
+          )}
           <div className="px-[2vw] max-w-5xl">
             {!post[0].premium ? (
               <PortableText

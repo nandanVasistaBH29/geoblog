@@ -1,6 +1,5 @@
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
-//
 import axios from "axios";
 import Header from "../../components/Header";
 import DOMPurify from "isomorphic-dompurify";
@@ -10,6 +9,7 @@ const Get = () => {
   let slug = route.query.slug;
   const [blog, setBlog] = useState([]);
   const [body, setBody] = useState([]);
+  const [voices, setVoices] = useState([]);
   useEffect(() => {
     getBlog();
   }, [slug]);
@@ -31,6 +31,12 @@ const Get = () => {
       console.log(err);
     }
   };
+  const speak = () => {
+    // console.log("Speak was clicked  " + text);
+    let msg = new SpeechSynthesisUtterance();
+    msg.text = document.querySelector(".body").textContent;
+    speechSynthesis.speak(msg);
+  };
   return (
     <div>
       <main>
@@ -39,6 +45,20 @@ const Get = () => {
         {blog !== [] && (
           <article className="text-w-3xl max-w-5xl mx-auto p-5">
             <h1 className="text-3xl mt-10 mb-3">{blog.title}</h1>
+            <button
+              className="bg-orange-600 text-xl p-2 m-2 text-white rounded-lg"
+              onClick={speak}
+            >
+              Narate
+            </button>
+
+            <div>
+              {voices !== [] &&
+                voices.map((voice) => {
+                  <div>voice</div>;
+                })}
+            </div>
+
             <h2 className="text-xl font-light text-gray-300 mb-2">
               {blog.description}
             </h2>
@@ -50,9 +70,12 @@ const Get = () => {
                 </span>
               </p>
             </div>
-            <div className="px-[2vw] max-w-5xl">
-              <div dangerouslySetInnerHTML={{ __html: body }} />
-            </div>
+            <main className="px-[2vw] max-w-5xl">
+              <div
+                className="body"
+                dangerouslySetInnerHTML={{ __html: body }}
+              />
+            </main>
           </article>
         )}
       </main>
