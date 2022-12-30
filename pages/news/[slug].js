@@ -1,5 +1,3 @@
-import axios from "axios";
-import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 //added env
 import Header from "../../components/Header";

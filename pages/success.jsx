@@ -28,6 +28,7 @@ const success = () => {
       `/api/auth/upgrade-profile?upgrade=${session_id}`,
       { email: email }
     );
+    console.log(res);
   };
   return <div>Success </div>;
 };

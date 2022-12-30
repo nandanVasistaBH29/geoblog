@@ -44,7 +44,7 @@ const Post = ({ post }: Props) => {
     try {
       const res = await axios.post(`/api/auth/verify-access`, {
         email: email,
-        access: "1",
+        access: "1", //pro
       });
       setAccess(true);
       console.log(res);

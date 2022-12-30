@@ -60,7 +60,8 @@ const Write = () => {
       });
       if (!res.data.error) {
         setAccess(true);
-        setUid(res.data.uid[0].uid);
+        console.log(res.data);
+        setUid(res.data.uid[0].id);
         return;
       }
     } catch (err) {
